@@ -1,3 +1,6 @@
+![GitHub Logo](/centalityX_logo.png)
+Format: ![Alt Text](url)
+
 # CentralityX
 Network Diagram with Centrality Measures for Qlik Sense
 
