@@ -1,4 +1,4 @@
-![GitHub Logo](/centalityX_logo.png)
+![GitHub Logo](/centralityX_logo.png)
 Format: ![Alt Text](url)
 
 # CentralityX
