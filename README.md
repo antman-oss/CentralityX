@@ -1,5 +1,5 @@
 ![GitHub Logo](/centralityx_logo.png)
-Format: ![CentralityX Logo Image](url)
+
 
 # CentralityX
 Network Diagram with Centrality Measures for Qlik Sense
