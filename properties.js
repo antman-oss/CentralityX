@@ -26,6 +26,12 @@ define( [], function () {
 				label: "Node Color",
 				type: "string",
 				component: "expression"
+			},
+			four: {
+				ref: "qAttributeExpressions.3.qExpression",
+				label: "Node Size",
+				type: "string",
+				component: "expression"
 			}
 		}
 	};
@@ -79,6 +85,51 @@ define( [], function () {
                         ref: "props.q_init_node_max",
                         label: "Initial Node Size Max",
                         type: "number"
+					},
+					four: {
+						ref: "props.q_nodelabelsize",
+						label: "Label Size",
+						type: "number",
+						expression: "optional",
+						defaultValue: 10
+                    },
+                    five: {
+						ref: "props.q_nodelabelfont",
+						label: "Label Font",
+						type: "string",
+						expression: "optional",
+						defaultValue: "Arial"
+                    },
+                   	six: {
+						ref: "props.q_nodelabelcolor",
+						label: "Label Color",
+						type: "string",
+						expression: "optional",
+						defaultValue: "#333333"
+					},
+					seven: {
+                        ref: "props.q_node_search",
+                        label: "Node Searching",
+                        type: "",
+                        component: "dropdown",
+                        options: [{
+							value: "name",
+							label: "Name"
+						}, {
+							value: "desc",
+							label: "Description"
+						},{
+                            value: "both",
+                            label: "Both"
+                        }],
+						defaultValue: "name"
+					},
+					eight: {
+						ref: "props.q_node_hover",
+						label: "Enable Hover",
+						type: "boolean",
+						expression: "optional",
+						defaultValue: true
 					}
 				}
 			},
@@ -108,15 +159,26 @@ define( [], function () {
 						defaultValue: 10
 					},
 					four: {
-						ref: "props.q_force_strength",
-						label: "Force Directed Strength",
-						type: "number"
+						ref: "props.q_edgelabelsize",
+						label: "Label Size",
+						type: "number",
+						expression: "optional",
+						defaultValue: 10
+                    },
+                    five: {
+						ref: "props.q_edgelabelfont",
+						label: "Label Font",
+						type: "string",
+						expression: "optional",
+						defaultValue: "Arial"
+                    },
+                   	six: {
+						ref: "props.q_edgelabelcolor",
+						label: "Label Color",
+						type: "string",
+						expression: "optional",
+						defaultValue: "#333333"
 					},
-					five: {
-						ref: "props.q_force_distanceMax",
-						label: "Force Distance Max",
-						type: "number"
-					}
 				}				
 			},
 			oLabels: {
@@ -124,33 +186,12 @@ define( [], function () {
 				label: "Labels",
 				items: {
 					one: {
-						ref: "props.q_defaultlabelsize",
-						label: "Label Size",
-						type: "number",
-						expression: "optional",
-						defaultValue: 10
-                    },
-                    two: {
-						ref: "props.q_defaultlabelfont",
-						label: "Label Font",
-						type: "string",
-						expression: "optional",
-						defaultValue: "Arial"
-                    },
-                    three: {
 						ref: "props.q_defaultlabelthreshold",
 						label: "Show on Zoom Ratio",
 						type: "number",
 						expression: "optional",
 						defaultValue: 0
-					},
-					four: {
-						ref: "props.q_defaultlabelcolor",
-						label: "Label Color",
-						type: "string",
-						expression: "optional",
-						defaultValue: "#333333"
-                    }
+					}
 				}	
             },
             oOptions: {
@@ -158,31 +199,41 @@ define( [], function () {
 				label: "Options",
 				items: {
 					one: {
+						ref: "props.q_showdegree",
+						label: "Degree",
+						type: "boolean",
+						expression: "optional"
+					},
+					two: {
+						ref: "props.q_showbetweenness",
+						label: "Betweenness",
+						type: "boolean",
+						expression: "optional"
+                    },
+                    three: {
+						ref: "props.q_showeigenvector",
+						label: "Eigenvector",
+						type: "boolean",
+						expression: "optional"
+					},
+					four: {
 						ref: "props.q_alphadecay",
 						label: "AlphaDecay (0.00 - 1.00)",
 						type: "number",
 						expression: "optional",
 						defaultValue: 0.05
 					},
-					two: {
-						ref: "props.q_showdegree",
-						label: "Degree",
-						type: "boolean",
-						expression: "optional"
+					five: {
+						ref: "props.q_force_strength",
+						label: "Force Directed Strength",
+						type: "number"
 					},
-					three: {
-						ref: "props.q_showbetweenness",
-						label: "Betweenness",
-						type: "boolean",
-						expression: "optional"
-                    },
-                    four: {
-						ref: "props.q_showeigenvector",
-						label: "Eigenvector",
-						type: "boolean",
-						expression: "optional"
-                    },
-                    five: {
+					six: {
+						ref: "props.q_force_distanceMax",
+						label: "Force Distance Max",
+						type: "number"
+					},
+                    seven: {
                         ref: "props.q_menu_x",
                         label: "Menu Position X",
                         type: "",
@@ -200,7 +251,7 @@ define( [], function () {
                         }],
 						defaultValue: "center"
                     },
-                    six: {
+                    eight: {
                         ref: "props.q_menu_y",
                         label: "Menu Position Y",
                         type: "",
@@ -215,12 +266,26 @@ define( [], function () {
 						}],
 						defaultValue: "top"
                     },
-                    seven: {
+                    nine: {
                         ref: "props.q_node_warn",
                         label: "Node Count Warning",
                         type: "number",
                         expression: "optional"
-					}
+					},
+					ten: {
+                        ref: "props.q_color_theme",
+                        label: "Color Theme",
+                        type: "",
+                        component: "dropdown",
+                        options: [{
+							value: "light",
+							label: "Light"
+						}, {
+							value: "dark",
+							label: "Dark"
+						}],
+						defaultValue: "light"
+					}					
 				}	
 			}
 		}
@@ -240,7 +305,30 @@ define( [], function () {
         items: {
             dimensions: dimensions,
             measures: measures,
-            appearance: appearanceSection
+			appearance: appearanceSection,
+			about: {
+				component:"items",
+				label:"About",
+				items:{
+					header:{
+						label:"CentralityX",
+						style:"header",
+						component:"text"
+					},
+					paragraph1:{
+                        label:"Version: 2.1.1",
+                    	component:"text"
+					},
+					paragraph2:{
+                        label:"Author: A Garbin",
+                    	component:"text"
+					},
+					paragraph3:{
+                        label:"Base: D3.JS, NetworkX.JS",
+                    	component:"text"
+					}
+				}
+			}
 
         }
     };

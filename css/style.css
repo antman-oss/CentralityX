@@ -39,30 +39,68 @@
 }
 
 .qv-object-CentralityX label {
-  color: #333333;
+  color: #666666;
   display: inline-block;
   cursor: pointer;
   font-weight: normal;
-  padding: 1px 4px;
+  padding: 2px 4px;
   font-family: helvetica;
-  font-size: 8;
+  font-size: 10;
 }
 
 .qv-object-CentralityX input[type=radio]:checked + label {
-  color: #333333;
-  background: #999999;
+  color: #666666;
+  background: #AAAAAA;
 }
 
 .qv-object-CentralityX label + input[type=radio] + label {
-  border-left: solid 2px #999999;
+  border-left: solid 2px #AAAAAA;
 }
 
 .radio-group {
-  border: solid 1px #999999;
+  border: solid 1px #AAAAAA;
   display: inline-block;
   margin: 4px;
   border-radius: 5px;
   overflow: hidden;
+  background-color: #FFFFFF;
 }
 
+.qv-object-CentralityX .search-box {
+  border: solid 1px #AAAAAA;
+  display: inline-block;
+  margin: 2px;
+  padding: 0px 4px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.qv-object-CentralityX input[type=button] {
+  border: solid 1px #AAAAAA;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  font-size: 20px;
+  width: 50px;
+}
+
+.qv-object-CentralityX .inspect {
+  border: solid 1px #AAAAAA;
+  background-color: #FFFFFF;
+  padding: 0px;
+  border-radius: 10px;
+  text-align: right;
+  display: inline-block;
+}
+
+.qv-object-CentralityX .inspectBtn {
+  border: solid 1px #AAAAAA;
+  background-color: #FFFFFF;
+  padding: 0px;
+  border-radius: 10px;
+  text-align: right;
+}
 

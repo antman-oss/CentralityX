@@ -5,7 +5,7 @@ requirejs.config({
 });
 define( [
 	"jquery", "./properties", "./js/jsnetworkx", "text!./css/style.css", "d3"],
-function ($,props,jsnx,cssContent,d3,d3l) {
+function ($,props,jsnx,cssContent,d3) {
 	'use strict';
 		
 	return {
@@ -42,7 +42,6 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 		
 			$element.empty();
 			
-			//var app = qlik.currApp(this);
 			if (!$("style[id='ext']").length > 0) {
 				if (!$("link[id='ext']").length > 0) {
 					$('<style id="ext">').html(cssContent).appendTo('head');				
@@ -99,10 +98,10 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 				$Item.html(html);
 				$element.append($Item.attr("id",id).width(width).height(height));
 			};
-	
+			
 			//Setup pointers to required dimensions
-			var node_a = 0//dim_info.findIndex(x => x.dimension=="q_node_a") //Node A ID (unique)
-		    var node_b = 1//dim_info.findIndex(x => x.dimension=="q_node_b") //Node B ID (unique)
+			var node_a = 0
+		    var node_b = 1
 			var edge_weight = measure_info.findIndex(x => x.measure=="q_edge_weight") //Edge weight (line thickness)
 			if (edge_weight >= 0){
 				var edge_weight_min = measure_info[edge_weight].min //Edge Weight (Min Line thickness)
@@ -120,9 +119,9 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 			var oNodeSearch = layout.props.q_node_search || 'name';
 			var oNodeHover = layout.props.q_node_hover;
 			var oEdgeColor = layout.props.q_defaultedgecolor || '#aaaaaa';
-			var oNodeSize = 1;
-			var oForceStrength = !layout.props.q_force_strength == 0 ? layout.props.q_force_strength : -300;
-			var oForceDistMax = !layout.props.q_force_distanceMax == 0 ? layout.props.q_force_distanceMax : 500;
+			var oNodeSize = 10;
+			var oForceStrength = !layout.props.q_force_strength == 0 ? layout.props.q_force_strength : -100;
+			var oForceDistMax = !layout.props.q_force_distanceMax == 0 ? layout.props.q_force_distanceMax : 60;
 			var oAlphaDecay = layout.props.q_alphadecay || 0.05;
 			var oTheme = layout.props.q_color_theme || 'light';
 			var oNLabelSize = layout.props.q_nodelabelsize || 10;
@@ -152,6 +151,7 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 			var gNodes = [];
 			var inspSize = 0;
 
+			//Setup Required Centrality Options
 			if (oDegree || oBetweenness || oEigenvector){
 				oCentralityRadio = ["None"];
 				oDegree ? oCentralityRadio.push('Degree') : '';
@@ -163,6 +163,7 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 				return ( value - edge_weight_min ) * ( oMaxLineWidth - oMinLineWidth ) / ( edge_weight_max - edge_weight_min ) + oMinLineWidth;
 			}
 			
+			//Edges - Create
 			var edges = [];
 			var wMin = oMinLineWidth,wMax = oMaxLineWidth;
 			var edgeSize = d3.scaleLinear()
@@ -177,18 +178,21 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 			
 			var G = new jsnx.Graph();
 			
-			var graph ={}, nodeSize;
-
 			G.addEdgesFrom(edges); //Nodes auto created from edge table
-			
+	
+
 			var gDegree = oDegree ? jsnx.degree(G) : ''; //Calculaltes number of neighbor nodes for each node
 			var nodeCount = G.adj.size
 			var gBetweenness = oBetweenness ? jsnx.betweennessCentrality(G) : ''; //Calculate betweenness score for each node
 						
-			if (nodeCount > 7 && oEigenvector){	
-				var gEigenvector = jsnx.eigenvectorCentrality(G); //Calculate eigenvector score for each node
+			if (oEigenvector){	
+				try{
+					var gEigenvector = jsnx.eigenvectorCentrality(G,{"maxIter":50,"tolerance":1e-4}); //Calculate eigenvector score for each node
+				}catch(e){
+					oEigenvector = false;
+				}
 			}else{
-				oEigenvector = false;
+					oEigenvector = false;
 			};
 			
 			
@@ -202,7 +206,7 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 				$('#'+menuGroup).css({'top':h})
 				$('#'+menuRadio).attr('align',oMenuX)
 
-
+				console.log(2)
 				if (oNodeWarning > 0 && nodeCount > oNodeWarning){ //Setup manual refresh for data load, avoid timeout on large datasets
 					$('#'+menuRadio+' div').append('<button type="button" id="'+btnRefresh+'" class="btn btn-xs btn-default">Many Nodes: Load?</button>')
 					$('#'+btnRefresh).on("click",function(){
@@ -323,7 +327,7 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 
 				//add node attr to Graph G
 				G.addNodesFrom(gNodes);
-
+				console.log(3)
 				//Create object array suitable for D3 processing - edges
 				var gEdges = []
 				var wMin = oMinLineWidth,wMax = oMaxLineWidth;
@@ -342,23 +346,6 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 					gEdges.push(o)
 				};
 				
-				/*var svg = d3.select("#" + chartID).append("svg")
-            		.attr("width",width)
-					.attr("height",height)
-					.style("background-color",oTheme == 'light' ? '#ffffff' : '#333333');
-				var container = svg.append('g')	
-				/*
-				var bg = container.append('rect')
-					.attr('class','lassoable')
-					.attr('x',0)
-					.attr('y',0)
-					.attr('width',width)
-					.attr('height',height)
-					.attr('opacity',0.1)
-					.attr('background-color','#ff0000');
-				*/
-
-
 				drawG(G,chartID,width,height,'none')
 				
 				d3.selectAll('.node').append('title').text(function(d){return d.data.desc})
@@ -424,8 +411,6 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 				};
 				//var clust = jsnx.numberOfCliques(G)
 				//console.log(clust)
-			
-
 
 			}//End of preStaging
 
@@ -573,18 +558,6 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 				$('#'+selectGrp+' input[type=radio]').on("click", function(){ //Button control logic
 					$(this).attr('id') == "Select" ? enableSelect() : enableInspect();
 				});
-
-				/* Disabling Feature. Use case is not high priority at this stage.
-				$('#'+actionGrp).append('<input type="radio" class="btn-opt" name="'+action+'" id="Touch">');
-				$('#'+actionGrp).append('<label class="btn-opt" for="Touch">Touch</label>');
-				$('#'+actionGrp).append('<input type="radio" class="btn-opt" name="'+action+'" id="Lasso">');
-				$('#'+actionGrp).append('<label class="btn-opt" for="Lasso">Lasso</label>');
-				$("input:radio[name="+action+"]:first").attr('checked', true);//Make first option appear selected
-
-				$('#'+actionGrp+' input[type=radio]').on("click", function(){ //Button control logic
-					$(this).attr('id') == "Pan" ? enableTouch() : enableLasso();
-				});
-				*/
 
 				$('#'+searchGrp).append('<input type="search" class="btn-opt" id="Search">');
 				$('#Search').on("search", function(e){ //Button control logic
@@ -813,72 +786,6 @@ function ($,props,jsnx,cssContent,d3,d3l) {
 						d3.selectAll('.line').transition().duration(300).style('opacity',0.7);
 					}
 				}
-
-				function enableLasso(){
-					try{
-					console.log(d3.selectAll('*'))
-					var lasso2 = d3l.d3lasso(d3.selectAll('.node'))
-							.closePathDistance(75) // max distance for the lasso loop to be closed
-							.closePathSelect(true) // can items be selected by closing the path?
-							.hoverSelect(false) // can items by selected by hovering over them?
-							.area(d3.selectAll('.lassoable')) // a lasso can be drawn on the bg rectangle and any of the circles on top of it
-							.items(circles) // the circles will be evaluated for lassoing
-							.scale(d3.zoomTransform(svg.node())) //the current pan zoom transform state
-							.on("start",lasso_start) // lasso start function
-							.on("draw",lasso_draw) // lasso draw function
-							.on("end",lasso_end); // lasso end function
-					}catch(e){
-						console.log(e);
-					}
-					svg.call(d3.zoom().on('zoom', null));
-					svg.call(lasso2);
-
-					function lasso_start() {
-						lasso2.items()
-						.classed("not-possible",true); // style as not possible
-					}
-					
-					function lasso_draw() {
-						
-						// Style the possible dots
-						var selected = container.selectAll('circle').filter(function(d) {return d.possible===true});
-						if (selected._groups[0].length > 0) { 
-							selected.classed("not-possible", false);
-							selected.classed("possible", true);
-						}; 
-			
-						// Style the not possible dot
-						var selected = container.selectAll('circle').filter(function(d) {return d.possible===false});
-						if (selected._groups[0].length > 0) { 
-							selected.classed("not-possible", true);
-							selected.classed("possible", false);
-						};
-						
-					}
-					
-					function lasso_end() {
-						
-						// Get all the lasso items that were "selected" by the user
-						var selectedItems = lasso2.items()
-							.filter(function(d) { return d.selected;});
-						
-						// Retrieve the dimension element numbers for the selected items
-						var elemNosA = [];
-						var elemNosB = [];
-						
-						selectedItems.nodes()
-							.forEach(function(d) {
-								d.__data__.hasOwnProperty('nodeqElemNumber0') ? elemNosA.push(d.__data__.nodeqElemNumber0) : elemNosB.push(d.__data__.nodeqElemNumber1)
-							});
-						// Filter these dimension values
-						self.backendApi.selectValues(0,elemNosA,false); //return NodeA selections
-						self.backendApi.selectValues(1,elemNosB,true); //return NodeB selections
-				
-					}	
-				}//End of Lasso
-				
-
-			//};//end of preStaging
 		} //End Paint
 	};//End of Return
 });//End of Define

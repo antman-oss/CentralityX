@@ -1,8 +1,8 @@
 {
-    "name": "CentralityX_v2",
+    "name": "CentralityX",
     "description": "Network Analysis Mapping with Centrality Scores",
     "type": "visualization",
-    "version": "0.2.4",
+    "version": "2.1.1",
     "icon": "extension",
     "author": "Anthony Garbin - Qlik",
     "homepage": "",
