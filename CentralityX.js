@@ -30,7 +30,6 @@ function ($,props,jsnx,cssContent,d3) {
 			Author Credits: Developing Extension, Extension Properties and Customisation Options. 
 							Re-Factoring D3 Lasso Library from D3 V.3 to D3 V.4, 
 							Integration with JSNetworkX
-							Integration between D3 Lasso and QSE
 							UI Design
 							Testing
 			3rd Party Credits: 
@@ -91,14 +90,14 @@ function ($,props,jsnx,cssContent,d3) {
 				// If the element doesn't exist, create it
 				var $Item = $('<div />')
 				var html = '<div style="position:absolute;z-index:2;background-color:white"><div id="' + chartID + '" width:"' + width + 'px" height="' + height + 'px"></div></div>'
-				html += '<table id="'+menuGroup+'" style="position:absolute;z-index:4;"><tr><td id="'+menuRadio+'"><div id="'+actionGrp+'" class="radio-group"></div><div id="'+selectGrp+'" class="radio-group"></div><div id="'+searchGrp+'" class="search-box"></div></td></tr></table>'
+				html += '<table id="'+menuGroup+'" style="position:absolute;z-index:4;"><tr><td id="'+menuRadio+'"></div><div id="'+selectGrp+'" class="radio-group"></div><div id="'+searchGrp+'" class="search-box"></div></td></tr></table>'
 				html += '<table id="'+inspectGrp+'" style="position:absolute;z-index:0;"><tr><td><div id="'+inspectDiv+'" class="inspect"></div></td></tr></table>'
 				html += '<div id="' + inspectDivBtn+'" style="position:absolute;z-index:5;"></div>'
 				html += '<table id="'+applyGrp+'" style="position:absolute;z-index:6;width:100px;left:'+(width-100)+'px;"><tr><td align="right"><div id="'+applyDiv+'" style="width:100px"></div></td></tr></table>'
 				$Item.html(html);
 				$element.append($Item.attr("id",id).width(width).height(height));
 			};
-			
+		
 			//Setup pointers to required dimensions
 			var node_a = 0
 		    var node_b = 1
@@ -206,7 +205,7 @@ function ($,props,jsnx,cssContent,d3) {
 				$('#'+menuGroup).css({'top':h})
 				$('#'+menuRadio).attr('align',oMenuX)
 
-				console.log(2)
+			
 				if (oNodeWarning > 0 && nodeCount > oNodeWarning){ //Setup manual refresh for data load, avoid timeout on large datasets
 					$('#'+menuRadio+' div').append('<button type="button" id="'+btnRefresh+'" class="btn btn-xs btn-default">Many Nodes: Load?</button>')
 					$('#'+btnRefresh).on("click",function(){
@@ -327,7 +326,7 @@ function ($,props,jsnx,cssContent,d3) {
 
 				//add node attr to Graph G
 				G.addNodesFrom(gNodes);
-				console.log(3)
+			
 				//Create object array suitable for D3 processing - edges
 				var gEdges = []
 				var wMin = oMinLineWidth,wMax = oMaxLineWidth;
@@ -567,8 +566,8 @@ function ($,props,jsnx,cssContent,d3) {
 
 			function createActionBtns(t){
 				if(t==1 && applyMenuActive == false){ //Enable Menu
-					$('#'+applyDiv).append('<input class="btn" type="image" id="btnCancel" src="/Extensions/CentralityX_2_beta/cross1.png" style="width:50px;height:40px">');
-					$('#'+applyDiv).append('<input class="btn" type="image" id="btnApply" src="/Extensions/CentralityX_2_beta/checkmark1.png" style="width:50px;height:40px">');
+					$('#'+applyDiv).append('<input class="btn" type="image" id="btnCancel" src="/Extensions/CentralityX/cross1.png" style="width:50px;height:40px">');
+					$('#'+applyDiv).append('<input class="btn" type="image" id="btnApply" src="/Extensions/CentralityX/checkmark1.png" style="width:50px;height:40px">');
 					//style="width:20px;height:20px"
 					$('#btnCancel').on("click", function(){ //Button control logic
 						btnCancel();
@@ -600,9 +599,9 @@ function ($,props,jsnx,cssContent,d3) {
 					$('#'+inspectGrp).css('left',inspSizeCalc[0][2]).css('top',inspSizeCalc[0][3])
 					$('#'+inspectDiv).width(inspSizeCalc[0][0]).height(inspSizeCalc[0][1])
 					
-					$('#'+inspectDivBtn).append('<input class="btn" type="image" id="btnShortest" src="/Extensions/CentralityX_2_beta/radiochecked1.png" style="width:30px;height:20px">');
-					$('#'+inspectDivBtn).append('<input class="btn" type="image" id="btnDecrease" src="/Extensions/CentralityX_2_beta/minus1.png" style="width:30px;height:20px">');
-					$('#'+inspectDivBtn).append('<input class="btn" type="image" id="btnIncrease" src="/Extensions/CentralityX_2_beta/plus1.png" style="width:30px;height:20px">');
+					$('#'+inspectDivBtn).append('<input class="btn" type="image" id="btnShortest" src="/Extensions/CentralityX/radiochecked1.png" style="width:30px;height:20px">');
+					$('#'+inspectDivBtn).append('<input class="btn" type="image" id="btnDecrease" src="/Extensions/CentralityX/minus1.png" style="width:30px;height:20px">');
+					$('#'+inspectDivBtn).append('<input class="btn" type="image" id="btnIncrease" src="/Extensions/CentralityX/plus1.png" style="width:30px;height:20px">');
 					$('#'+inspectDivBtn).width(90).height(20)
 					$('#'+inspectDivBtn).css('left',width-100).css('top',height-32)
 					$('#btnIncrease').on("click", function(){ //Button control logic

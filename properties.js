@@ -291,6 +291,23 @@ define( [], function () {
 		}
     };
 
+	// *****************************************************************************
+    // Appearance Section
+    // *****************************************************************************
+
+	var addons = {
+			uses: "addons",
+				items: {
+					dataHandling: {
+						uses: "dataHandling",
+							items: {
+								calcCond: {
+									uses: "calcCond"
+								}
+							}
+						}
+					}
+				}
     // *****************************************************************************
     // Main property panel definition
     // ~~
@@ -306,6 +323,7 @@ define( [], function () {
             dimensions: dimensions,
             measures: measures,
 			appearance: appearanceSection,
+			addons:	addons,
 			about: {
 				component:"items",
 				label:"About",

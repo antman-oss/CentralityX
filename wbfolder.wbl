@@ -3,4 +3,10 @@ CentralityX.js;
 js/jsnetworkx.js;
 js/d3.v4.min.js;
 properties.js;
-css/style.css
+css/style.css;
+centralityx_logo.png;
+checkmark1.png;
+cross1.png;
+minus1.png;
+plus1.png;
+radiochecked1.png
